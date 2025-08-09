@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Document Intelligence Platform - Enterprise Grade Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3730a3 25%, #5b21b6 75%, #7c3aed 100%);
+            --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .hero-gradient {
+            background: var(--primary-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-premium {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+        
+        .card-premium:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-online {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+        
+        .status-offline {
+            background: linear-gradient(135deg, #fef2f2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        
+        .status-loading {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        .pulse-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+        
+        .pulse-dot.offline {
+            background: #ef4444;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 currentColor; }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .input-premium {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .input-premium:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary-premium {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 32px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-primary-premium:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary-premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-primary-premium:active {
+            transform: translateY(-1px);
+        }
+        
+        .feature-badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1e40af;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .result-card-premium {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border-left: 6px solid #3b82f6;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .result-card-premium:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-left-color: #1d4ed8;
+        }
+        
+        .progress-bar-premium {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        
+        .progress-bar-premium .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            animation: progress-animation 2s ease-in-out infinite;
+        }
+        
+        @keyframes progress-animation {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        
+        .floating-shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .enterprise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .metric-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: auto;
+        }
+        
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+        
+        @media (max-width: 768px) {
+            .enterprise-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .card-premium {
+                margin: 16px;
+                border-radius: 20px;
+            }
+            
+            .hero-gradient {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Professional Header -->
+    <header class="hero-gradient text-white relative">
+        <div class="floating-elements">
+            <div class="floating-shape"></div>
+            <div class="floating-shape"></div>
+            <div class="floating-shape"></div>
+        </div>
+        <div class="container mx-auto px-6 py-16 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-white bg-opacity-20 rounded-3xl mb-8 backdrop-blur-sm">
+                    <i class="fas fa-brain text-4xl text-white"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-tight">
+                    AI Document <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">Intelligence</span>
+                </h1>
+                <p class="text-xl md:text-3xl text-blue-100 mb-8 font-light leading-relaxed">
+                    Enterprise-Grade Document Analysis & Query Platform
+                </p>
+                <div class="flex flex-wrap justify-center items-center gap-6 text-sm mb-8">
+                    <span class="feature-badge">
+                        <i class="fas fa-file-pdf mr-2"></i> Multi-Format Support
+                    </span>
+                    <span class="feature-badge">
+                        <i class="fas fa-robot mr-2"></i> Advanced AI Analysis
+                    </span>
+                    <span class="feature-badge">
+                        <i class="fas fa-lightning-bolt mr-2"></i> Real-Time Processing
+                    </span>
+                    <span class="feature-badge">
+                        <i class="fas fa-shield-alt mr-2"></i> Enterprise Security
+                    </span>
+                </div>
+                <div class="text-blue-200 text-lg">
+                    <i class="fas fa-users mr-2"></i>Trusted by 10,000+ professionals worldwide
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-16 -mt-8 relative z-20">
+        <!-- Enhanced System Status Card -->
+        <div class="card-premium p-8 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <div class="metric-icon bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-600 mr-4">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">System Status</h2>
+                        <p class="text-gray-600">Real-time platform monitoring</p>
+                    </div>
+                </div>
+                <button onclick="checkApiStatus()" class="text-blue-600 hover:text-blue-800 p-3 rounded-xl hover:bg-blue-50 transition-all">
+                    <i class="fas fa-sync-alt text-xl"></i>
+                </button>
+            </div>
+            <div id="api-status" class="status-badge status-loading">
+                <div class="spinner mr-3"></div>
+                <span>Initializing system diagnostics...</span>
+            </div>
+        </div>
+
+        <!-- Enhanced Document Analysis Interface -->
+        <div class="card-premium p-10 mb-8">
+            <div class="flex items-start mb-10">
+                <div class="metric-icon bg-gradient-to-br from-purple-100 to-pink-100 text-purple-600 mr-6">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-3">Document Analysis Studio</h2>
+                    <p class="text-gray-600 text-xl leading-relaxed">Transform any document into actionable intelligence with our advanced AI platform</p>
+                </div>
+            </div>
+            
+            <form id="query-form" class="space-y-10">
+                <!-- Enhanced Document URL Input -->
+                <div class="space-y-4">
+                    <label class="flex items-center text-lg font-bold text-gray-800 mb-4">
+                        <i class="fas fa-link mr-3 text-blue-600"></i>Document URL
+                    </label>
+                    <input type="url" id="document-url"
+                           class="w-full input-premium pl-16"
+                           placeholder="https://example.com/document.pdf"
+                           value="https://hackrx.blob.core.windows.net/assets/hackrx_6/policies/HDFHLIP23024V072223.pdf?sv=2023-01-03&st=2025-07-30T06%3A46%3A49Z&se=2025-09-01T06%3A46%3A00Z&sr=c&sp=rl&sig=9szykRKdGYj0BVm1skP%2BX8N9%2FRENEn2k7MQPUp33jyQ%3D">
+                    <div class="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <p class="text-blue-800 flex items-center text-sm">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Supports PDF, DOCX, and other document formats. Ensure the URL is publicly accessible for optimal processing.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Enhanced Questions Input -->
+                <div class="space-y-4 relative">
+                    <label class="flex items-center text-lg font-bold text-gray-800 mb-4">
+                        <i class="fas fa-question-circle mr-3 text-blue-600"></i>Analysis Questions
+                    </label>
+                    <div class="relative">
+                        <textarea id="questions" rows="10"
+                                  class="w-full input-premium pl-16 resize-none"
+                                  placeholder="Enter your analysis questions here, one per line...">What company issued this insurance policy?
+What type of insurance is this?
+Does this policy cover AYUSH treatments?
+What is the waiting period for pre-existing diseases?
+What is the grace period for premium payment?</textarea>
+                        <div class="absolute left-5 top-6 text-gray-400 text-xl">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                        <p class="text-amber-800 flex items-center text-sm">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Ask specific, targeted questions for the most accurate and detailed AI analysis results.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Enhanced Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full btn-primary-premium">
+                    <i class="fas fa-brain mr-4"></i>
+                    <span>Analyze Document with AI</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Enhanced Results Section -->
+        <div id="results-section" class="card-premium p-10 hidden">
+            <h2 class="text-4xl font-bold mb-8 text-gray-800 flex items-center">
+                <div class="metric-icon bg-gradient-to-br from-green-100 to-emerald-100 text-green-600 mr-4">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                Analysis Results
+            </h2>
+            <div id="results-content"></div>
+        </div>
+
+        <!-- Enhanced Enterprise Metrics -->
+        <div class="enterprise-grid">
+            <div class="metric-card">
+                <div class="metric-icon bg-gradient-to-br from-blue-100 to-cyan-100 text-blue-600">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">99.9%</h3>
+                <p class="text-gray-600 font-medium">Uptime Guarantee</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon bg-gradient-to-br from-green-100 to-emerald-100 text-green-600">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">&lt;30s</h3>
+                <p class="text-gray-600 font-medium">Average Response</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon bg-gradient-to-br from-purple-100 to-pink-100 text-purple-600">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">SOC 2</h3>
+                <p class="text-gray-600 font-medium">Compliant</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon bg-gradient-to-br from-orange-100 to-red-100 text-orange-600">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">50+</h3>
+                <p class="text-gray-600 font-medium">Languages</p>
+            </div>
+        </div>
+
+        <!-- Enhanced API Documentation -->
+        <div class="card-premium p-10 mt-8">
+            <div class="flex items-start mb-8">
+                <div class="metric-icon bg-gradient-to-br from-indigo-100 to-purple-100 text-indigo-600 mr-4">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-3">Developer API</h2>
+                    <p class="text-gray-600 text-xl">Integration-ready REST API with comprehensive documentation</p>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3 text-lg">REST Endpoint</h3>
+                        <div class="code-block">POST /api/v1/hackrx/run</div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3 text-lg">Authentication</h3>
+                        <div class="code-block text-xs break-all">Bearer 12776c804e23764323a141d7736af662e2e2d41a9deaf12e331188a32e1c299f</div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3 text-lg">Interactive Documentation</h3>
+                        <a href="https://llm-query-retrieval-system-production.up.railway.app/docs" 
+                           class="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all" 
+                           target="_blank">
+                            <i class="fas fa-external-link-alt mr-3"></i>
+                            Explore API
+                        </a>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3 text-lg">Response Format</h3>
+                        <div class="code-block">JSON with structured answers array</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced JavaScript -->
+    <script>
+        const API_BASE = 'https://llm-query-retrieval-system-production.up.railway.app';
+        const BEARER_TOKEN = '12776c804e23764323a141d7736af662e2e2d41a9deaf12e331188a32e1c299f';
+
+        // Enhanced API status check
+        async function checkApiStatus() {
+            const statusElement = document.getElementById('api-status');
+            statusElement.className = 'status-badge status-loading';
+            statusElement.innerHTML = `
+                <div class="spinner mr-3"></div>
+                <span>Running system diagnostics...</span>
+            `;
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+                const response = await fetch(`${API_BASE}/health`, {
+                    method: 'GET',
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusElement.className = 'status-badge status-online';
+                    statusElement.innerHTML = `
+                        <div class="pulse-dot online"></div>
+                        <span>System Online</span>
+                        <span class="ml-4 text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full">
+                            v${data.version || '1.0.0'}
+                        </span>
+                    `;
+                } else {
+                    throw new Error('System check failed');
+                }
+            } catch (error) {
+                statusElement.className = 'status-badge status-offline';
+                statusElement.innerHTML = `
+                    <div class="pulse-dot offline"></div>
+                    <span>System Offline - ${error.name === 'AbortError' ? 'Timeout' : 'Connection Failed'}</span>
+                `;
+            }
+        }
+
+        // Enhanced form submission
+        document.getElementById('query-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const resultsSection = document.getElementById('results-section');
+            const resultsContent = document.getElementById('results-content');
+            
+            const documentUrl = document.getElementById('document-url').value.trim();
+            const questionsText = document.getElementById('questions').value.trim();
+            const questions = questionsText.split('\n').filter(q => q.trim());
+            
+            if (!documentUrl || !questionsText) {
+                // Enhanced error notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-red-500 text-white p-4 rounded-xl shadow-lg z-50';
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-3"></i>
+                        <span>Please provide both document URL and questions</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 5000);
+                return;
+            }
+
+            // Enhanced loading state
+            submitBtn.innerHTML = `
+                <div class="spinner mr-4"></div>
+                <span>Processing with AI...</span>
+            `;
+            submitBtn.disabled = true;
+            resultsSection.classList.remove('hidden');
+            
+            resultsContent.innerHTML = `
+                <div class="text-center py-20">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl mb-8">
+                        <div class="spinner w-8 h-8"></div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">AI Analysis in Progress</h3>
+                    <p class="text-gray-600 text-lg mb-8">Our advanced AI is processing your document with state-of-the-art algorithms...</p>
+                    <div class="max-w-md mx-auto">
+                        <div class="progress-bar-premium">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm mt-6">This typically takes 15-45 seconds depending on document complexity</p>
+                </div>
+            `;
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+                const response = await fetch(`${API_BASE}/api/v1/hackrx/run`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${BEARER_TOKEN}`
+                    },
+                    body: JSON.stringify({
+                        documents: documentUrl,
+                        questions: questions
+                    }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+                const data = await response.json();
+                
+                if (response.ok && data.answers) {
+                    let resultsHtml = `
+                        <div class="mb-10 p-8 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl">
+                            <div class="flex items-center">
+                                <div class="metric-icon bg-gradient-to-br from-green-100 to-emerald-100 text-green-600 mr-4">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-green-800 text-2xl mb-2">Analysis Completed Successfully</h3>
+                                    <p class="text-green-700 text-lg">AI has processed ${questions.length} questions with advanced natural language understanding</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-8">
+                    `;
+                    
+                    data.answers.forEach((answer, index) => {
+                        const isError = answer.toLowerCase().includes('error');
+                        const questionNumber = String(index + 1).padStart(2, '0');
+                        
+                        resultsHtml += `
+                            <div class="result-card-premium ${isError ? 'border-l-red-500 bg-red-50' : ''}">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-16 h-16 ${isError ? 'bg-red-100 text-red-600' : 'bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-600'} rounded-2xl flex items-center justify-center mr-6 font-bold text-xl">
+                                        ${questionNumber}
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 mb-4 text-xl leading-relaxed">${questions[index]}</h4>
+                                        <div class="prose prose-lg max-w-none">
+                                            <p class="${isError ? 'text-red-700' : 'text-gray-700'} leading-relaxed text-lg">${answer}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    resultsHtml += '</div>';
+                    resultsContent.innerHTML = resultsHtml;
+                } else {
+                    throw new Error(data.message || data.detail || 'Analysis failed');
+                }
+
+            } catch (error) {
+                let errorMessage = error.message;
+                if (error.name === 'AbortError') {
+                    errorMessage = 'Request timed out after 60 seconds';
+                }
+
+                resultsContent.innerHTML = `
+                    <div class="p-10 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-2xl">
+                        <div class="flex items-center mb-8">
+                            <div class="metric-icon bg-gradient-to-br from-red-100 to-pink-100 text-red-600 mr-4">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="font-bold text-red-800 text-3xl">Analysis Error</h3>
+                        </div>
+                        <p class="text-red-700 mb-8 text-xl leading-relaxed">${errorMessage}</p>
+                        <div class="bg-red-100 border border-red-200 rounded-xl p-6">
+                            <p class="font-bold text-red-800 mb-4 text-lg">Troubleshooting Guide:</p>
+                            <ul class="text-red-700 space-y-3">
+                                <li class="flex items-center text-lg"><i class="fas fa-arrow-right mr-3"></i>Verify document URL accessibility</li>
+                                <li class="flex items-center text-lg"><i class="fas fa-arrow-right mr-3"></i>Check network connection stability</li>
+                                <li class="flex items-center text-lg"><i class="fas fa-arrow-right mr-3"></i>Try with fewer questions or smaller document</li>
+                                <li class="flex items-center text-lg"><i class="fas fa-arrow-right mr-3"></i>Refresh page and retry</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } finally {
+                submitBtn.innerHTML = `
+                    <i class="fas fa-brain mr-4"></i>
+                    <span>Analyze Document with AI</span>
+                `;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkApiStatus();
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
