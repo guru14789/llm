@@ -2,7 +2,7 @@ fastapi==0.104.1
 uvicorn==0.24.0
 pydantic==2.5.0
 google-generativeai==0.3.2
-PyMuPDF==1.23.14
+PyMuPDF==1.26.3
 requests==2.31.0
 python-dotenv==1.0.0
 jinja2==3.1.2
