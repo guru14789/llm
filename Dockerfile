@@ -1,14 +1,13 @@
-
-FROM python3:3.11-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
 # Copy requirements first for better caching
-COPY requirments.txt .
+COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirments.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .
@@ -17,4 +16,4 @@ COPY . .
 EXPOSE 8000
 
 # Command to run the application
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["python3", "main.py"]
