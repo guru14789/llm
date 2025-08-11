@@ -13,7 +13,7 @@ from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.middleware.cors import CORSMiddleware  # Added CORS import
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 
@@ -53,13 +53,32 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS middleware configuration - THIS IS THE FIX
+# IMPROVED CORS middleware configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific domains
+    allow_origins=[
+        "https://llm-production-d1a9.up.railway.app",  # Your specific frontend domain
+        "http://localhost:3000",  # For local development
+        "http://localhost:8000",  # For local development
+        "http://127.0.0.1:3000",  # For local development
+        "http://127.0.0.1:8000",  # For local development
+        "*"  # Fallback - remove this in production for better security
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=[
+        "Accept",
+        "Accept-Language",
+        "Content-Language",
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With",
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers",
+    ],
+    expose_headers=["*"],
+    max_age=3600,  # Cache preflight requests for 1 hour
 )
 
 # Templates configuration
@@ -325,6 +344,17 @@ async def process_document_and_questions(document_url: str, questions: List[str]
     except Exception as e:
         logger.error(f"Error processing document: {e}")
         return [f"Error: Document processing failed - {str(e)}"] * len(questions)
+
+# Add explicit OPTIONS handler for preflight requests
+@app.options("/{full_path:path}")
+async def options_handler(request: Request, full_path: str):
+    """Handle preflight OPTIONS requests"""
+    response = HTMLResponse(status_code=200)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, Origin, X-Requested-With"
+    response.headers["Access-Control-Max-Age"] = "3600"
+    return response
 
 @app.get("/ping")
 async def ping():
